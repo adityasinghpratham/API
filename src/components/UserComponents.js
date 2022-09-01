@@ -2,7 +2,16 @@ import React from 'react'
 import Table from 'react-bootstrap/Table';
 import { Component } from 'react' 
 import axios from 'axios';
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
 export class UserComponents extends Component {
+  
   constructor(props){
     super(props);
     this.state = {
@@ -20,7 +29,7 @@ export class UserComponents extends Component {
   }
   submit(evenet,id){
     evenet.preventDefault();
-    if(id){
+    if(true){
       axios.post("http://localhost:8080/api/v1/employee/",{
       id: this.state.id,
       name: this.state.name,
@@ -64,14 +73,8 @@ export class UserComponents extends Component {
       <div className="container">
          <div className="row">
          <div className="col s6">
-          <h1>Form for User</h1>
-                 <form className="form-group" onSubmit={(e)=>this.submit(e,this.state.id)}>
-                 <div className="input-field col s12">
-                 <label htmlFor="autocomplete-input" className="form-check-label"><h3>Enter Id</h3></label>
-                 <br />
-                    <input value={this.state.id} onChange={(e)=>this.setState({id:e.target.value})} type="text" id="autocomplete-input" className="form-control"  />
-                   
-                  </div>
+                 <form id="myForm" className="form-group form-popup" onSubmit={(e)=>this.submit(e,this.state.id)}>
+                 
                   <div className="input-field col s12">
                   <label htmlFor="autocomplete-input"><h3>Enter Name</h3></label>
                   <br />
@@ -91,10 +94,14 @@ export class UserComponents extends Component {
                     
                   </div>
                   <button type="submit" name="action" class="btn btn-success pad">Submit</button>
+                  <button class="btn btn-danger pad" onClick={closeForm}>Close</button>
                  </form>
+               
+                 
           </div>          
           <div className="col s6">
           <h1>Users List</h1>
+          <button class="btn btn-primary" onClick={openForm} >Create User</button>
           <Table striped bordered hover variant="dark">
         <thead>
           
@@ -117,7 +124,7 @@ export class UserComponents extends Component {
                       <td>{user.experience}</td>
                       <td>{user.designation}</td>
                       <td>
-                        <button onClick={(e)=>this.edit(user.id)} type="submit" name="action" class="btn btn-warning">Edit</button>       
+                        <button onClick= {(e) => { this.edit(user.id); openForm()}} type="submit" name="action" class="btn btn-warning">Update</button>       
                       </td>
                       <td>
                       <button onClick={(e)=>this.delete(user.id)} type="submit" name="action" class="btn btn-danger">Delete</button>       
